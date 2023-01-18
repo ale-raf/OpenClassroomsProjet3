@@ -1,14 +1,18 @@
-let user = {
-    email : "",
-    password : ""
-};
+const form = document.querySelector('#form');
 
-let response = await fetch("http://localhost:5678/api/users/login", {
-    method : 'POST',
-    headers : {
-        'Content-type': 'application/json;charset=utf-8'
-    },
-    body : JSON.stringify(user)
+form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const one = new FormData(form);
+    const two = new URLSearchParams(one);
+    fetch("http://localhost:5678/api/users/login", {
+        method : 'POST',
+        body : one,
+        headers : {
+                'Content-Type': 'application/json'
+                }
+    })
+        .then(res => res.json())
+        .then(data => console.log(data))
+        .catch(err => alert('error'))
 });
 
-let result = await response.json();
