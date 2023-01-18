@@ -208,6 +208,10 @@ margin: auto;
 	color: black;
 }
 
+#submit {
+	cursor: pointer;
+}
+
 input[type="submit"]{
 	font-family: 'Syne';
 	font-weight: 700;
