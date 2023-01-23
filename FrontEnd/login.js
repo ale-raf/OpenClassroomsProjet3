@@ -3,8 +3,8 @@ function login() {
     form.addEventListener("submit", (e) => {
         e.preventDefault();
         let user = {
-        email : e.target.querySelector('#email').value,
-        password : e.target.querySelector('#password').value,
+            email : e.target.querySelector('#email').value,
+            password : e.target.querySelector('#password').value,
         };
         fetch("http://localhost:5678/api/users/login", {
             method : 'POST',
@@ -24,6 +24,8 @@ function login() {
             .then(value => {
                 window.localStorage.setItem("token", value.token);
                 window.location.href = "index.html";
+                let login = document.querySelector("#login");
+                login.innerHTML = "connecté";
             })
             .catch(err => console.log(err))
     });
