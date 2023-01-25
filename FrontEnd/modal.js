@@ -1,24 +1,12 @@
 const modalGallery = document.querySelector('.modal-works');
-const deleteGallery = document.querySelector('#modal-delete');
-const modalBtn = document.querySelector('.modal-js');
-const token = localStorage.getItem('token');
+const deleteGalleryBtn = document.querySelector('#modal-delete');
+var validTitle = /^[a-zA-ZéèîïÉÈÎÏ][a-zéèêàçîï]+([-'\s][a-zA-ZéèîïÉÈÎÏ][a-zéèêàçîï]+)?$/;
 var works;
 let modal = null;
-
-// function editWorks() {
-//     if (token) {
-//         modalBtn.style.display = null
-//     } else {
-//         modalBtn.style.display = "none"
-//     }
-// }
-
-// editWorks();
 
 
 const openModalWindow = function (e) {
     e.preventDefault();
-    // const firstModal = document.querySelector('.modal-js');
     const target = document.querySelector(e.target.getAttribute('href'));
     target.style.display = null;
     target.setAttribute('aria-hidden', false);
@@ -27,6 +15,12 @@ const openModalWindow = function (e) {
     modal.addEventListener('click', closeModalWindow);
     modal.querySelector('.modal-close-js').addEventListener('click', closeModalWindow);
     modal.querySelector('.modal-stop').addEventListener('click', focusModal);
+    document.querySelector('#modal-valid').setAttribute('disabled', "");
+    document.querySelector('#file').value = null;
+    document.querySelector('#add-work-title').value = null;
+    document.querySelector('#add-work-category').value = "";
+    document.querySelector('.modal-add-img').style.display = null;
+    document.querySelector('.modal-add-img-2').style.display = "none";
 }
 
 const closeModalWindow = function (e) {
@@ -43,13 +37,30 @@ const closeModalWindow = function (e) {
     modal.querySelector('.modal-stop').removeEventListener('click', focusModal);
 }
 
+// const switchModalWindow = function (e) {
+//     e.preventDefault();
+//     const firstModal = document.querySelector('#modal-1');
+//     const secondModal = document.querySelector('#modal-2');
+//     if (firstModal.style.display = "none") {
+//         secondModal.style.display = "none";
+//         firstModal.style.display = null;
+//     } else {
+//         firstModal.style.display = "none";
+//         secondModal.style.display = null;
+//     }
+//     // document.querySelector('#modal-add').addEventListener('click', switchModalWindow);
+//     // document.querySelector('.back-modal').addEventListener('click', switchModalWindow);
+// }
+
+
+
 const focusModal = function (e) {
     e.stopPropagation();
 }
 
 document.querySelectorAll('.modal-js').forEach(a => {
     a.addEventListener('click', openModalWindow);
-});
+})
 
 window.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' || e.key === 'Esc') {
@@ -58,16 +69,12 @@ window.addEventListener('keydown', function (e) {
 })
 
 
-
-
-
-
-
 // GET WORKS FROM SERVER
 async function getModalWorks() {   
     const response = await fetch ("http://localhost:5678/api/works");
     works = await response.json();
     showModalGallery(works);
+    sendWork();
     return works;
 };
 
@@ -94,10 +101,9 @@ function showModalGallery(works) {
         modalGallery.appendChild(figure);
         figure.append(btn1, btn2, img, figcaption);
 
-        // DELETE WORK
+        // DELETE CHOSEN WORK
         btn1.addEventListener("click", () => {
             let id = work.id;
-            console.log(id);
             if (window.confirm("Êtes-vous sûr de vouloir supprimer ce projet ?")) {
                 fetch(`http://localhost:5678/api/works/${id}`, {
                 method : 'DELETE',
@@ -124,49 +130,122 @@ function showModalGallery(works) {
     }
 }
 
+
+// DELETE ALL WORKS
+deleteGalleryBtn.addEventListener("click", () => {
+    if (window.confirm("Êtes-vous sûr de vouloir supprimer l'ensemble des projets ?")) {
+        fetch("http://localhost:5678/api/works", {
+        method : 'DELETE',
+        headers : {
+                'Accept' : 'application/json',
+                'Content-Type' : 'application/json',
+                'Authorization' : 'Bearer ' + token
+                },
+        body : null
+        })
+        .then(res => {
+            if (res.ok) {
+                return res.json();
+            } else {
+                alert("Vous devez être authentifié pour effectuer cette opération")
+            }
+        })
+        .then(value => {
+            console.log(value);
+        })
+        .catch(err => console.log(err))
+    }
+});
+
+
 works = getModalWorks();
 
-// // deleteGallery.addEventListener('click', () => {
-// //     modalGallery.innerHTML = "";
-// // })
+
+// PREVIEW PHOTO BEFORE POSTING IT
+const input = document.getElementById('file');
+const previewPhoto = () => {
+    const file = input.files; 
+    if (file) {
+        const fileReader = new FileReader();
+        const preview = document.getElementById('modal-preview-img');
+        fileReader.onload = function (event) {
+            preview.setAttribute('src', event.target.result);
+        }
+        fileReader.readAsDataURL(file[0]);
+        document.querySelector('.modal-add-img').style.display = "none";
+        document.querySelector('.modal-add-img-2').style.display = null;
+    }
+}
+input.addEventListener("change", previewPhoto);
+
+// ENBALED FORM BUTTON IF EVERY INPUT IS CHECKED
+// function enableFormBtn () {
+//     document.querySelectorAll('.modal-form input').forEach(ipt => {
+//         ipt.addEventListener("input", (e) => {
+//             if (e.target.value !== null) {
+//                 document.querySelector('#modal-valid').removeAttribute('disabled');
+//             }
+//         })
+//     })
+// }
+// enableFormBtn();
+const formBtn = document.querySelector('#modal-valid');
+const form = document.querySelector('.modal-form');
+const formElements = document.querySelector('.modal-form').elements;
+const title = document.querySelector('#add-work-title');
+
+form.addEventListener("change", validationForm);
+
+function validationForm (e) {
+    //Si le champ est vide
+    for (let i = 0; i < formElements.length; i++) {
+        if (formElements[i].value === null && validTitle.test(title.value) == false){
+        e.preventDefault();
+        alert("Veuillez vérifier les champs renseignés");
+    //Si le format de données est incorrect
+    } else {
+        document.querySelector('#modal-valid').removeAttribute('disabled');
+    }
+    }
+}
 
 
 // DOWNLOAD NEW WORK
-// function sendWork() {
-//     const form = document.querySelector('.modal-form');
-//     form.addEventListener("submit", (e) => {
-//         e.preventDefault();
-//         let work = {
-//             image : e.target.querySelector('#file').value,
-//             title : e.target.querySelector('#add-work-title').value,
-//             category : e.target.querySelector('#add-work-category').value
-//         };
-//         // const formData = new formData();
-//         // formData.append('work', work[0])
-//         fetch("http://localhost:5678/api/works", {
-//             method : 'POST',
-//             headers : {
-//                     'Accept' : 'application/json',
-//                     'Content-Type' : 'application/json',
-//                     'Authorization' : `Bearer ${+ token} `
-//                     },
-//             body : JSON.stringify(work)
-//         })
-//             .then(res => {
-//                 if (res.ok) {
-//                     return res.json();
-//                 } else {
-//                     alert("Veuillez vérifier les champs renseignés");
-//                 }
-//             })
-//             .then(value => {
-//                 window.localStorage.setItem('image', value.imageUrl);
-//                 window.localStorage.setItem('title', value.title);
-//                 window.localStorage.setItem('category', value.category.name);
-//             })
-//             .catch(err => console.log(err))
-//     });
-// };
-
-// sendWork();
-
+function sendWork() {
+    const form = document.querySelector('.modal-form');
+    form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        let image = e.target.querySelector('#file');
+        let title = e.target.querySelector('#add-work-title').value;
+        let category = e.target.querySelector('#add-work-category').value;
+        if (title === "" || image.files === "") {
+            alert("Veuillez vérifier les champs renseignés");
+        } else {
+            const formData = new FormData()
+            formData.append('image', image.files[0])
+            formData.append('title', title);
+            formData.append('category', category);
+            fetch("http://localhost:5678/api/works", {
+            method : 'POST',
+            headers : {
+                    //'Accept' : 'application/json',
+                    //'Content-Type' : 'multipart/form-data',
+                    'Authorization' : 'Bearer ' + token
+                    },
+            body : formData
+            })
+            .then(res => {
+                if (res.ok) {
+                    return res.json();
+                } else {
+                    alert("Veuillez vérifier les champs renseignés");
+                }
+            })
+            .then(value => {
+                console.log(value);
+                location.href = "#";
+            })
+            .catch(err => console.log(err))
+        }
+    });
+};

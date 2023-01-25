@@ -2,6 +2,8 @@ const gallery = document.querySelector('.gallery');
 const filters = document.querySelector('.filters-container');
 var works;
 
+// 
+
 
 // GET WORKS FROM SERVER
 async function getWorks() {
@@ -70,6 +72,21 @@ function showCategories(categories) {
     };
 };
 
-
 works = getWorks();
 getCategories();
+
+const token = sessionStorage.getItem('token');
+const modalBtn = document.querySelector('.modal-js');
+console.log(token)
+function edit() {
+        if (token !== null) {
+        modalBtn.style.display = null;
+        let login = document.querySelector("#login");
+        login.innerHTML = "logout";
+        login.classList.add('login-active');
+    } else {
+        modalBtn.style.display = "none";
+        login.innerHTML = "login";
+    }
+}
+edit();

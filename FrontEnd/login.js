@@ -22,10 +22,8 @@ function login() {
                 }
             })
             .then(value => {
-                window.localStorage.setItem("token", value.token);
+                sessionStorage.setItem("token", value.token);
                 window.location.href = "index.html";
-                let login = document.querySelector("#login");
-                login.innerHTML = "connecté";
             })
             .catch(err => console.log(err))
     });

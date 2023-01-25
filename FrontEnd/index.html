@@ -18,7 +18,7 @@
 		<ul>
 			<li><a href="#portfolio">projets</li></a>
 			<li><a href="#contact">contact</li></a>
-			<li><a href="login.html">login</a></li>
+			<li><a href="login.html" id="login">login</a></li>
 			<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
 		</ul>
 	</nav>
@@ -38,7 +38,7 @@
 	<section id="portfolio">
 		<div id="portfolio-title">
 			<h2>Mes Projets</h2>
-			<a href="#modal-1" class="modal-js"><i class="fa-regular fa-pen-to-square"></i>modifier</a>
+			<a href="#modal-2" class="modal-js"><i class="fa-regular fa-pen-to-square"></i>modifier</a>
 		</div>
 			
 		<!--MODAL 1-->
@@ -61,7 +61,7 @@
 		<aside id="modal-2" class="modal" aria-hidden="true" role="dialog" aria-labelledby="modal-title" style="display: none;">
 			<div class="modal-container modal-stop">
 				<div class="modal-close-container2">
-					<button class="back-modal modal-back-js"><i class="fa-solid fa-arrow-left"></i></button>
+					<a href="#modal-1" class="modal-js"><button class="back-modal"><i class="fa-solid fa-arrow-left"></i></button></a>
 					<button class="close-modal modal-close-js"><i class="fa-solid fa-xmark"></i></button>
 				</div>
 				<h1 id="modal-title">Ajout photo</h1>
@@ -70,19 +70,26 @@
 						<div class="modal-add-img">
 							<i class="fa-regular fa-image"></i>
 							<label for="file">+ Ajouter photo</label>
-							<input type="file" id="file" accept=".jpg, .png">
+							<input type="file" id="file" accept="image/*">
 							<p>jpg, png : 4mo max</p>
+						</div>
+						<div class="modal-add-img-2" style="display: none;">
+							<img id="modal-preview-img">
 						</div>
 						<label for="add-work-title">Titre</label>
 						<input type="text" name="add-work-title" id="add-work-title">
 						<label for="add-work-category">Catégorie</label>
-						<select name="add-work-category" id="add-work-category">
-							<option value="objects">Objets</option>
-							<option value="apartments">Appartements</option>
-							<option value="hotels">Hotels & restaurants</option>
+						<select name="add-work-category" id="add-work-category" required>
+							<option value=""></option>
+							<option value="1">Objets</option>
+							<option value="2">Appartements</option>
+							<option value="3">Hotels & restaurants</option>
 						</select>
 						<div class="modal-breakline"></div>
-						<a href="#modal-3" class="modal-js"><input type="submit" id="modal-valid" value="Valider"></a>
+						<div class="submit-container">
+							<input type="submit" id="modal-valid" value="Valider" disabled>
+						</div>
+						
 					</form>
 			</div>
 		</aside>

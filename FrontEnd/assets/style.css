@@ -73,14 +73,13 @@ h1{
 	font-family: 'Syne';
 	font-size: 22px;
 	font-weight: 800;
-	color: #B1663C
+	color: #B1663C;
 }
 
 h1 > span {
 	font-family: 'Work Sans';
 	font-size:10px;
 	letter-spacing: 0.1em;
-;
 }
 
 h2{
@@ -103,6 +102,11 @@ nav li {
 li:hover, a:hover {
 	color: #B1663C;
 }
+
+.login-active {
+	font-weight: bolder ;
+}
+
 #introduction {
 	display: flex;
 	align-items: center;
@@ -387,8 +391,7 @@ footer nav ul {
     to { transform: translateY(-750px); }
 }
 
-.modal-add-img {
-	padding: 1em;
+.modal-add-img, .modal-add-img-2 {
 	background-color: #e8f1f7;
 	display: flex;
 	flex-direction: column;
@@ -428,10 +431,14 @@ footer nav ul {
 }
 
 .modal-add-img p {
-	margin: 10px;
+	margin: 20px;
 	color: #444444;
 	font-size: 10px;
 	font-family: 'Work Sans';
+}
+
+#modal-preview-img {
+	width: 30%;
 }
 
 .modal-form input {
@@ -450,7 +457,7 @@ footer nav ul {
 	background-color: white;
 }
 
-#modal-valid {
+#modal-valid:disabled{
 	box-sizing: border-box;
 	width: 50%;
 	color: white;
@@ -461,10 +468,23 @@ footer nav ul {
 	border: none;
 	border-radius: 60px;
 	background-color: #a7a7a7;
+	cursor: default;
+}
+
+#modal-valid {
+	background-color: #1D6154;
+	box-sizing: border-box;
+	width: 50%;
+	color: white;
+	font-family: 'Syne';
+	font-size: 14px;
+	padding: 10px;
+	margin: 30px auto;
+	border: none;
+	border-radius: 60px;
 	cursor: pointer;
 }
 
-#modal-valid:hover {
-	background-color: #1D6154;
-	transition: 0.3s;
+.submit-container {
+	text-align: center;
 }
