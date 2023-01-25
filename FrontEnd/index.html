@@ -70,7 +70,7 @@
 						<div class="modal-add-img">
 							<i class="fa-regular fa-image"></i>
 							<label for="file">+ Ajouter photo</label>
-							<input type="file" id="file" accept="image/*">
+							<input name="file" type="file" id="file" accept="image/*">
 							<p>jpg, png : 4mo max</p>
 						</div>
 						<div class="modal-add-img-2" style="display: none;">
@@ -79,7 +79,7 @@
 						<label for="add-work-title">Titre</label>
 						<input type="text" name="add-work-title" id="add-work-title">
 						<label for="add-work-category">Catégorie</label>
-						<select name="add-work-category" id="add-work-category" required>
+						<select name="add-work-category" id="add-work-category">
 							<option value=""></option>
 							<option value="1">Objets</option>
 							<option value="2">Appartements</option>
@@ -87,7 +87,7 @@
 						</select>
 						<div class="modal-breakline"></div>
 						<div class="submit-container">
-							<input type="submit" id="modal-valid" value="Valider" disabled>
+							<input type="submit" id="modal-valid" value="Valider">
 						</div>
 						
 					</form>

@@ -158,9 +158,6 @@ deleteGalleryBtn.addEventListener("click", () => {
 });
 
 
-works = getModalWorks();
-
-
 // PREVIEW PHOTO BEFORE POSTING IT
 const input = document.getElementById('file');
 const previewPhoto = () => {
@@ -178,34 +175,17 @@ const previewPhoto = () => {
 }
 input.addEventListener("change", previewPhoto);
 
-// ENBALED FORM BUTTON IF EVERY INPUT IS CHECKED
-// function enableFormBtn () {
-//     document.querySelectorAll('.modal-form input').forEach(ipt => {
-//         ipt.addEventListener("input", (e) => {
-//             if (e.target.value !== null) {
-//                 document.querySelector('#modal-valid').removeAttribute('disabled');
-//             }
-//         })
-//     })
-// }
-// enableFormBtn();
-const formBtn = document.querySelector('#modal-valid');
+
+// ACTIVE FORM BUTTON IF EVERY INPUT IS CHECKED
 const form = document.querySelector('.modal-form');
-const formElements = document.querySelector('.modal-form').elements;
-const title = document.querySelector('#add-work-title');
-
-form.addEventListener("change", validationForm);
-
-function validationForm (e) {
-    //Si le champ est vide
-    for (let i = 0; i < formElements.length; i++) {
-        if (formElements[i].value === null && validTitle.test(title.value) == false){
-        e.preventDefault();
-        alert("Veuillez vérifier les champs renseignés");
-    //Si le format de données est incorrect
+const formBtn = document.querySelector('#modal-valid');
+formBtn.setAttribute('disabled', true);
+form.addEventListener('change', enableFormBtn);
+function enableFormBtn() {
+    if (document.querySelector('#file').value === "" || document.querySelector('#add-work-title') === "" || document.querySelector('#add-work-category') === "") {
+        formBtn.setAttribute('disabled', true);
     } else {
-        document.querySelector('#modal-valid').removeAttribute('disabled');
-    }
+        formBtn.removeAttribute('disabled');
     }
 }
 
@@ -218,7 +198,7 @@ function sendWork() {
         let image = e.target.querySelector('#file');
         let title = e.target.querySelector('#add-work-title').value;
         let category = e.target.querySelector('#add-work-category').value;
-        if (title === "" || image.files === "") {
+        if (title === "" || validTitle.test(title) == false || image.files === "" || category === "") {
             alert("Veuillez vérifier les champs renseignés");
         } else {
             const formData = new FormData()
@@ -228,8 +208,6 @@ function sendWork() {
             fetch("http://localhost:5678/api/works", {
             method : 'POST',
             headers : {
-                    //'Accept' : 'application/json',
-                    //'Content-Type' : 'multipart/form-data',
                     'Authorization' : 'Bearer ' + token
                     },
             body : formData
@@ -243,9 +221,11 @@ function sendWork() {
             })
             .then(value => {
                 console.log(value);
-                location.href = "#";
             })
             .catch(err => console.log(err))
         }
     });
 };
+
+
+works = getModalWorks();
