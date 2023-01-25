@@ -1,5 +1,4 @@
 const modalGallery = document.querySelector('.modal-works');
-const deleteGalleryBtn = document.querySelector('#modal-delete');
 var validTitle = /^[a-zA-ZéèîïÉÈÎÏ][a-zéèêàçîï]+([-'\s][a-zA-ZéèîïÉÈÎÏ][a-zéèêàçîï]+)?$/;
 var works;
 let modal = null;
@@ -14,6 +13,8 @@ const openModalWindow = function (e) {
     modal = target;
     modal.addEventListener('click', closeModalWindow);
     modal.querySelector('.modal-close-js').addEventListener('click', closeModalWindow);
+    modal.querySelector('#modal-add').addEventListener('click', switchModalWindow);
+    modal.querySelector('.back-modal').addEventListener('click', switchModalWindow);
     modal.querySelector('.modal-stop').addEventListener('click', focusModal);
     document.querySelector('#modal-valid').setAttribute('disabled', "");
     document.querySelector('#file').value = null;
@@ -37,19 +38,20 @@ const closeModalWindow = function (e) {
     modal.querySelector('.modal-stop').removeEventListener('click', focusModal);
 }
 
+
+
+// On aperçoit la transition se faire mais la modale disparait sans vraiment se fermer
 // const switchModalWindow = function (e) {
 //     e.preventDefault();
 //     const firstModal = document.querySelector('#modal-1');
 //     const secondModal = document.querySelector('#modal-2');
-//     if (firstModal.style.display = "none") {
+//     if (firstModal.style.display == "none" && secondModal.style.display == null) {
 //         secondModal.style.display = "none";
 //         firstModal.style.display = null;
 //     } else {
 //         firstModal.style.display = "none";
 //         secondModal.style.display = null;
 //     }
-//     // document.querySelector('#modal-add').addEventListener('click', switchModalWindow);
-//     // document.querySelector('.back-modal').addEventListener('click', switchModalWindow);
 // }
 
 
@@ -61,6 +63,7 @@ const focusModal = function (e) {
 document.querySelectorAll('.modal-js').forEach(a => {
     a.addEventListener('click', openModalWindow);
 })
+
 
 window.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' || e.key === 'Esc') {
@@ -132,6 +135,7 @@ function showModalGallery(works) {
 
 
 // DELETE ALL WORKS
+const deleteGalleryBtn = document.querySelector('#modal-delete');
 deleteGalleryBtn.addEventListener("click", () => {
     if (window.confirm("Êtes-vous sûr de vouloir supprimer l'ensemble des projets ?")) {
         fetch("http://localhost:5678/api/works", {
@@ -182,7 +186,7 @@ const formBtn = document.querySelector('#modal-valid');
 formBtn.setAttribute('disabled', true);
 form.addEventListener('change', enableFormBtn);
 function enableFormBtn() {
-    if (document.querySelector('#file').value === "" || document.querySelector('#add-work-title') === "" || document.querySelector('#add-work-category') === "") {
+    if (document.querySelector('#file').value === "" || document.querySelector('#add-work-title').value === "" || document.querySelector('#add-work-category').value === "") {
         formBtn.setAttribute('disabled', true);
     } else {
         formBtn.removeAttribute('disabled');
