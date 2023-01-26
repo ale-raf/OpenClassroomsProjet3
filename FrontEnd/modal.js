@@ -1,5 +1,5 @@
 const modalGallery = document.querySelector('.modal-works');
-var validTitle = /^[a-zA-ZéèîïÉÈÎÏ][a-zéèêàçîï]+([-'\s][a-zA-ZéèîïÉÈÎÏ][a-zéèêàçîï]+)?$/;
+var validTitle = /^[^123456789@&()!_$*€£`+=\/;?#]+$/;
 var works;
 
 
@@ -35,6 +35,7 @@ window.onload = () => {
             modal.querySelector('#file').value = null;
             modal.querySelector('#add-work-title').value = null;
             modal.querySelector('#add-work-category').value = "";
+            modal.querySelector('#modal-valid').setAttribute('disabled', true);
             modal.querySelector('.modal-add-img').style.display = null;
             modal.querySelector('.modal-add-img-2').style.display = "none";
         });
@@ -47,7 +48,6 @@ async function getModalWorks() {
     const response = await fetch ("http://localhost:5678/api/works");
     works = await response.json();
     showModalGallery(works);
-    sendWork();
     return works;
 };
 
@@ -165,28 +165,29 @@ function sendWork() {
     const form = document.querySelector('.modal-form');
     form.addEventListener("submit", (e) => {
         e.preventDefault();
-        let image = e.target.querySelector('#file');
+        let image = e.target.querySelector('#file').files[0];
         let title = e.target.querySelector('#add-work-title').value;
         let category = e.target.querySelector('#add-work-category').value;
-        if (title === "" || validTitle.test(title) == false || image.files === "" || category === "") {
+        if (image === "" || title === "" || validTitle.test(title) == false || category === "") {
             alert("Veuillez vérifier les champs renseignés");
         } else {
-            const formData = new FormData()
-            formData.append('image', image.files[0])
+            const formData = new FormData();
+            formData.append('image', image);
             formData.append('title', title);
             formData.append('category', category);
             fetch("http://localhost:5678/api/works", {
             method : 'POST',
             headers : {
-                    'Authorization' : 'Bearer ' + token
-                    },
+                'Accept' : 'application/json', 
+                'Authorization' : 'Bearer ' + token
+            },
             body : formData
             })
             .then(res => {
                 if (res.ok) {
                     return res.json();
                 } else {
-                    alert("Veuillez vérifier les champs renseignés");
+                    alert("Une erreur s'est produite");
                 }
             })
             .then(value => {
@@ -197,5 +198,6 @@ function sendWork() {
     });
 };
 
+sendWork();
 
 works = getModalWorks();

@@ -77,7 +77,6 @@ getCategories();
 
 const token = sessionStorage.getItem('token');
 const modalBtn = document.querySelector('.modal-js');
-console.log(token)
 function edit() {
         if (token !== null) {
         modalBtn.style.display = null;
