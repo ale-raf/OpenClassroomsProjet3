@@ -1,75 +1,45 @@
 const modalGallery = document.querySelector('.modal-works');
 var validTitle = /^[a-zA-ZéèîïÉÈÎÏ][a-zéèêàçîï]+([-'\s][a-zA-ZéèîïÉÈÎÏ][a-zéèêàçîï]+)?$/;
 var works;
-let modal = null;
 
 
-const openModalWindow = function (e) {
-    e.preventDefault();
-    const target = document.querySelector(e.target.getAttribute('href'));
-    target.style.display = null;
-    target.setAttribute('aria-hidden', false);
-    target.setAttribute('aria-modal', true);
-    modal = target;
-    modal.addEventListener('click', closeModalWindow);
-    modal.querySelector('.modal-close-js').addEventListener('click', closeModalWindow);
-    modal.querySelector('#modal-add').addEventListener('click', switchModalWindow);
-    modal.querySelector('.back-modal').addEventListener('click', switchModalWindow);
-    modal.querySelector('.modal-stop').addEventListener('click', focusModal);
-    document.querySelector('#modal-valid').setAttribute('disabled', "");
-    document.querySelector('#file').value = null;
-    document.querySelector('#add-work-title').value = null;
-    document.querySelector('#add-work-category').value = "";
-    document.querySelector('.modal-add-img').style.display = null;
-    document.querySelector('.modal-add-img-2').style.display = "none";
+// DISPLAY MODALS AND SWITCH BETWEEN THEY
+window.onload = () => {
+    const modalBtn = document.querySelectorAll('[data-toggle=modal]');
+    for (let btn of modalBtn) {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            let target = this.dataset.target;
+            let modal = document.querySelector(target);
+            modal.classList.add('modal-active');
+            document.querySelectorAll('.modal-close-js').forEach(close => {
+                close.addEventListener('click', () => {
+                    modal.classList.remove('modal-active');
+                })
+            });
+            modal.addEventListener('click', function() {
+                if (modal === document.querySelector('#modal-1')) {
+                    this.classList.remove('modal-active');
+                } else {
+                    document.querySelectorAll('.modal').forEach(mod => mod.classList.remove('modal-active'));
+                }
+            });
+            modal.children[0].addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+            window.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' || e.key === 'Esc') {
+                        modal.classList.remove('modal-active');
+                }
+            });
+            modal.querySelector('#file').value = null;
+            modal.querySelector('#add-work-title').value = null;
+            modal.querySelector('#add-work-category').value = "";
+            modal.querySelector('.modal-add-img').style.display = null;
+            modal.querySelector('.modal-add-img-2').style.display = "none";
+        });
+    };
 }
-
-const closeModalWindow = function (e) {
-    if (modal === null) return
-    e.preventDefault();
-    window.setTimeout(function() {
-        modal.style.display = "none";
-        modal = null;
-    }, 600);
-    modal.setAttribute('aria-hidden', true);
-    modal.removeAttribute('aria-modal');
-    modal.removeEventListener('click', closeModalWindow);
-    modal.querySelector('.modal-close-js').removeEventListener('click', closeModalWindow);
-    modal.querySelector('.modal-stop').removeEventListener('click', focusModal);
-}
-
-
-
-// On aperçoit la transition se faire mais la modale disparait sans vraiment se fermer
-// const switchModalWindow = function (e) {
-//     e.preventDefault();
-//     const firstModal = document.querySelector('#modal-1');
-//     const secondModal = document.querySelector('#modal-2');
-//     if (firstModal.style.display == "none" && secondModal.style.display == null) {
-//         secondModal.style.display = "none";
-//         firstModal.style.display = null;
-//     } else {
-//         firstModal.style.display = "none";
-//         secondModal.style.display = null;
-//     }
-// }
-
-
-
-const focusModal = function (e) {
-    e.stopPropagation();
-}
-
-document.querySelectorAll('.modal-js').forEach(a => {
-    a.addEventListener('click', openModalWindow);
-})
-
-
-window.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' || e.key === 'Esc') {
-        closeModalWindow(e);
-    }
-})
 
 
 // GET WORKS FROM SERVER
@@ -120,8 +90,6 @@ function showModalGallery(works) {
                 .then(res => {
                     if (res.ok) {
                         return res.json();
-                    } else {
-                        alert("Vous devez être authentifié pour supprimer ce travail")
                     }
                 })
                 .then(value => {
@@ -150,8 +118,6 @@ deleteGalleryBtn.addEventListener("click", () => {
         .then(res => {
             if (res.ok) {
                 return res.json();
-            } else {
-                alert("Vous devez être authentifié pour effectuer cette opération")
             }
         })
         .then(value => {

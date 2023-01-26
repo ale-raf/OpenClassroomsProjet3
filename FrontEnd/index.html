@@ -38,13 +38,13 @@
 	<section id="portfolio">
 		<div id="portfolio-title">
 			<h2>Mes Projets</h2>
-			<a href="#modal-1" class="modal-js"><i class="fa-regular fa-pen-to-square"></i>modifier</a>
+			<a href="#" class="modal-js" role="button" data-target="#modal-1" data-toggle="modal"><i class="fa-regular fa-pen-to-square"></i>modifier</a>
 		</div>
 			
 		<!--MODAL 1-->
-		<aside id="modal-1" class="modal" aria-hidden="true" role="dialog" aria-labelledby="modal-title" style="display: none;">
+		<aside id="modal-1" class="modal" role="dialog">
 			<div class="modal-container modal-stop">
-				<div class="modal-close-container1">
+				<div class="modal-close-container-1">
 					<button class="close-modal modal-close-js"><i class="fa-solid fa-xmark"></i></button>
 				</div>
 				<h1 id="modal-title">Galerie photo</h1>
@@ -52,16 +52,16 @@
 					<!--EDITED GALLERY-->
 				</div>
 				<div class="modal-breakline"></div>
-				<a href="#modal-2" class="modal-js"><button id="modal-add">Ajouter une photo</button></a>
+				<a href="#" class="modal-js" data-target="#modal-2" data-toggle="modal"><button id="modal-add">Ajouter une photo</button></a>
 				<p id="modal-delete">Supprimer la galerie</p>
 			</div>
 		</aside>
 
 		<!--MODAL 2-->
-		<aside id="modal-2" class="modal" aria-hidden="true" role="dialog" aria-labelledby="modal-title" style="display: none;">
+		<aside id="modal-2" class="modal" role="dialog">
 			<div class="modal-container modal-stop">
-				<div class="modal-close-container2">
-					<a href="#modal-1" class="modal-js"><button class="back-modal"><i class="fa-solid fa-arrow-left"></i></button></a>
+				<div class="modal-close-container-2">
+					<a href="#" class="modal-js" data-target="#modal-1" data-toggle="modal"><button class="back-modal modal-close-js"><i class="fa-solid fa-arrow-left"></i></button></a>
 					<button class="close-modal modal-close-js"><i class="fa-solid fa-xmark"></i></button>
 				</div>
 				<h1 id="modal-title">Ajout photo</h1>
@@ -73,7 +73,7 @@
 							<input name="file" type="file" id="file" accept="image/*">
 							<p>jpg, png : 4mo max</p>
 						</div>
-						<div class="modal-add-img-2" style="display: none;">
+						<div class="modal-add-img-2" style="display:none">
 							<img id="modal-preview-img">
 						</div>
 						<label for="add-work-title">Titre</label>
