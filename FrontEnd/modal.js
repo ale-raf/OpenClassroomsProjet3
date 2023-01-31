@@ -12,6 +12,10 @@ window.onload = () => {
             let target = this.dataset.target;
             let modal = document.querySelector(target);
             modal.classList.add('modal-active');
+            if (target == "#modal-2") {
+                let previousModal = document.querySelector("#modal-1");
+                previousModal.classList.remove('modal-active');
+            };
             document.querySelectorAll('.modal-close-js').forEach(close => {
                 close.addEventListener('click', () => {
                     modal.classList.remove('modal-active');
@@ -29,7 +33,7 @@ window.onload = () => {
             });
             window.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape' || e.key === 'Esc') {
-                        modal.classList.remove('modal-active');
+                    modal.classList.remove('modal-active');
                 }
             });
             modal.querySelector('#file').value = null;
@@ -51,9 +55,11 @@ async function getModalWorks() {
     return works;
 };
 
+works = getModalWorks();
 
 // RESET GALLERY THEN REVEAL WORKS WITH FIGURE ELEMENTS
 function showModalGallery(works) {
+    modalGallery.innerHTML = "";
     for (let work of works) {
         let figure = document.createElement('figure');
         let img = document.createElement('img');
@@ -87,15 +93,17 @@ function showModalGallery(works) {
                         },
                 body : null
                 })
-                .then(res => {
-                    if (res.ok) {
-                        return res.json();
-                    }
-                })
+                // .then(res => {
+                //     if (res.ok) {
+                //         console.log(res);
+                //         return res.json();
+                //     }
+                // })
                 .then(value => {
-                    console.log(value);
+                    getWorks();
+                    getModalWorks();
                 })
-                .catch(err => console.log(err))
+                .catch(err => console.log(err));
             }
         });
     }
@@ -103,29 +111,30 @@ function showModalGallery(works) {
 
 
 // DELETE ALL WORKS
-const deleteGalleryBtn = document.querySelector('#modal-delete');
-deleteGalleryBtn.addEventListener("click", () => {
-    if (window.confirm("Êtes-vous sûr de vouloir supprimer l'ensemble des projets ?")) {
-        fetch("http://localhost:5678/api/works", {
-        method : 'DELETE',
-        headers : {
-                'Accept' : 'application/json',
-                'Content-Type' : 'application/json',
-                'Authorization' : 'Bearer ' + token
-                },
-        body : null
-        })
-        .then(res => {
-            if (res.ok) {
-                return res.json();
-            }
-        })
-        .then(value => {
-            console.log(value);
-        })
-        .catch(err => console.log(err))
-    }
-});
+// const deleteGalleryBtn = document.querySelector('#modal-delete');
+// deleteGalleryBtn.addEventListener("click", () => {
+//     if (window.confirm("Êtes-vous sûr de vouloir supprimer l'ensemble des projets ?")) {
+//         fetch("http://localhost:5678/api/works", {
+//         method : 'DELETE',
+//         headers : {
+//                 'Accept' : 'application/json',
+//                 'Content-Type' : 'application/json',
+//                 'Authorization' : 'Bearer ' + token
+//                 },
+//         body : null
+//         })
+//         // .then(res => {
+//         //     if (res.ok) {
+//         //         return res.json();
+//         //     }
+//         // })
+//         .then(value => {
+//             getWorks();
+//             getModalWorks();
+//         })
+//         .catch(err => console.log(err))
+//     }
+// });
 
 
 // PREVIEW PHOTO BEFORE POSTING IT
@@ -191,13 +200,16 @@ function sendWork() {
                 }
             })
             .then(value => {
-                console.log(value);
+                let currentModal = document.querySelector("#modal-2");
+                currentModal.classList.remove('modal-active');
+                getWorks();
+                getModalWorks();
+                let nextModal = document.querySelector("#modal-1");
+                nextModal.classList.add('modal-active');
             })
-            .catch(err => console.log(err))
+            .catch(err => console.log(err));
         }
     });
 };
 
 sendWork();
-
-works = getModalWorks();
