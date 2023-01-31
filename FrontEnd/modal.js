@@ -93,12 +93,6 @@ function showModalGallery(works) {
                         },
                 body : null
                 })
-                // .then(res => {
-                //     if (res.ok) {
-                //         console.log(res);
-                //         return res.json();
-                //     }
-                // })
                 .then(value => {
                     getWorks();
                     getModalWorks();
@@ -111,30 +105,27 @@ function showModalGallery(works) {
 
 
 // DELETE ALL WORKS
-// const deleteGalleryBtn = document.querySelector('#modal-delete');
-// deleteGalleryBtn.addEventListener("click", () => {
-//     if (window.confirm("Êtes-vous sûr de vouloir supprimer l'ensemble des projets ?")) {
-//         fetch("http://localhost:5678/api/works", {
-//         method : 'DELETE',
-//         headers : {
-//                 'Accept' : 'application/json',
-//                 'Content-Type' : 'application/json',
-//                 'Authorization' : 'Bearer ' + token
-//                 },
-//         body : null
-//         })
-//         // .then(res => {
-//         //     if (res.ok) {
-//         //         return res.json();
-//         //     }
-//         // })
-//         .then(value => {
-//             getWorks();
-//             getModalWorks();
-//         })
-//         .catch(err => console.log(err))
-//     }
-// });
+const deleteGalleryBtn = document.querySelector('#modal-delete');
+deleteGalleryBtn.addEventListener("click", () => {
+    if (window.confirm("Êtes-vous sûr de vouloir supprimer l'ensemble des projets ?")) {
+        for (let work of works) {
+            fetch(`http://localhost:5678/api/works/${work.id}`, {
+            method : 'DELETE',
+            headers : {
+                    'Accept' : 'application/json',
+                    'Content-Type' : 'application/json',
+                    'Authorization' : 'Bearer ' + token
+                    },
+            body : null
+            })
+            .then(value => {
+                getWorks();
+                getModalWorks();
+            })
+            .catch(err => console.log(err))
+        }
+    }
+});
 
 
 // PREVIEW PHOTO BEFORE POSTING IT

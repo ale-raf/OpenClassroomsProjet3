@@ -260,9 +260,6 @@ footer nav ul {
 	display: none;
 }
 
-/* .modal[aria-hidden="true"] .modal-container {
-	animation-name: hideModal;
-} */
 .modal-active {
 	position: fixed;
     display: flex;
@@ -280,12 +277,13 @@ footer nav ul {
 }
 
 .modal-container {
+	position: relative;
     background-color: #fff;
     width: 630px;
 	max-width: calc(100vw - 3em);
 	max-height: calc(100vh - 3em);
     overflow: auto;
-	padding: 1em;
+	padding: 1em 5em;
 	border-radius: 10px;
 	text-align: center;
 	animation: revealModal 0.6s both;
@@ -305,11 +303,6 @@ footer nav ul {
 	text-decoration: underline;
 }
 
-.modal-close-container-1 {
-	display: flex;
-	justify-content: flex-end;
-}
-
 .modal-close-container-2 {
 	display: flex;
 	justify-content: space-between;
@@ -320,6 +313,18 @@ footer nav ul {
 	background-color: white;
 	font-size: 1.4em;
 	cursor: pointer;
+}
+
+.close-modal {
+	position: absolute;
+	top: 30px;
+	right: 30px;
+}
+
+.back-modal {
+	position: absolute;
+	top: 30px;
+	left: 30px;
 }
 
 .modal-works {
@@ -386,16 +391,6 @@ footer nav ul {
 	font-family: 'Work Sans';
 	color: black;
 }
-
-/* @keyframes revealModal {
-    from { transform: translateY(-750px); }
-    to { transform: translateY(0px);}
-}
-
-@keyframes hideModal {
-    from { transform: translateY(0px); }
-    to { transform: translateY(-750px); }
-} */
 
 .modal-add-img, .modal-add-img-2 {
 	background-color: #e8f1f7;
