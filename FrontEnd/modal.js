@@ -12,20 +12,27 @@ window.onload = () => {
             let target = this.dataset.target;
             let modal = document.querySelector(target);
             modal.classList.add('modal-active');
+            modal.setAttribute('aria-hidden', 'false');
             if (target == "#modal-2") {
                 let previousModal = document.querySelector("#modal-1");
                 previousModal.classList.remove('modal-active');
+                previousModal.setAttribute('aria-hidden', 'true');
             };
             document.querySelectorAll('.modal-close-js').forEach(close => {
                 close.addEventListener('click', () => {
                     modal.classList.remove('modal-active');
+                    modal.setAttribute('aria-hidden', 'true');
                 })
             });
             modal.addEventListener('click', function() {
                 if (modal === document.querySelector('#modal-1')) {
                     this.classList.remove('modal-active');
+                    this.setAttribute('aria-hidden', 'true');
                 } else {
-                    document.querySelectorAll('.modal').forEach(mod => mod.classList.remove('modal-active'));
+                    document.querySelectorAll('.modal').forEach(mod => {
+                        mod.classList.remove('modal-active');
+                        mod.setAttribute('aria-hidden', 'true');
+                    });
                 }
             });
             modal.children[0].addEventListener('click', function(e) {
@@ -34,6 +41,7 @@ window.onload = () => {
             window.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape' || e.key === 'Esc') {
                     modal.classList.remove('modal-active');
+                    modal.setAttribute('aria-hidden', 'true');
                 }
             });
             modal.querySelector('#file').value = null;
