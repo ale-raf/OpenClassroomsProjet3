@@ -47,7 +47,7 @@ window.onload = () => {
 }
 
 
-// GET WORKS FROM SERVER
+// GET MODAL WORKS FROM SERVER
 async function getModalWorks() {   
     const response = await fetch ("http://localhost:5678/api/works");
     works = await response.json();
@@ -57,7 +57,7 @@ async function getModalWorks() {
 
 works = getModalWorks();
 
-// RESET GALLERY THEN REVEAL WORKS WITH FIGURE ELEMENTS
+// RESET MODAL GALLERY THEN REVEAL WORKS WITH FIGURE ELEMENTS
 function showModalGallery(works) {
     modalGallery.innerHTML = "";
     for (let work of works) {

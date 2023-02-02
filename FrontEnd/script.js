@@ -2,8 +2,6 @@ const gallery = document.querySelector('.gallery');
 const filters = document.querySelector('.filters-container');
 var works;
 
-// 
-
 
 // GET WORKS FROM SERVER
 async function getWorks() {
@@ -50,24 +48,19 @@ function showCategories(categories) {
     btn.innerHTML = "Tous";
     btn.classList.add('btn');
     btn.setAttribute('id', 0);
-
     btn.addEventListener("click", () => {
         showGallery(works);
     });
-
     filters.appendChild(btn);
-
     for (let category of categories) {
         let btn = document.createElement('button');
         btn.innerHTML = category.name;
         btn.classList.add('btn');
         btn.setAttribute('id', category.id);
-        
         btn.addEventListener("click", () => {
             let sortWorks = works.filter(work => work.categoryId == category.id);
             showGallery(sortWorks);
         });
-        
         filters.appendChild(btn);
     };
 };
@@ -75,6 +68,7 @@ function showCategories(categories) {
 works = getWorks();
 getCategories();
 
+// GET TOKEN TO DISPLAY ADMINISTRATOR ACTIONS
 const token = sessionStorage.getItem('token');
 const modalBtn = document.querySelector('.modal-js');
 function edit() {
