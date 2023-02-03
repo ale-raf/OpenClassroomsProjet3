@@ -44,12 +44,14 @@ window.onload = () => {
                     modal.setAttribute('aria-hidden', 'true');
                 }
             });
-            modal.querySelector('#file').value = null;
-            modal.querySelector('#add-work-title').value = null;
-            modal.querySelector('#add-work-category').value = "";
-            modal.querySelector('#modal-valid').setAttribute('disabled', true);
-            modal.querySelector('.modal-add-img').style.display = null;
-            modal.querySelector('.modal-add-img-2').style.display = "none";
+            if (modal === document.querySelector('#modal-2')) {
+                modal.querySelector('#file').value = null;
+                modal.querySelector('#add-work-title').value = null;
+                modal.querySelector('#add-work-category').value = "";
+                modal.querySelector('#modal-valid').setAttribute('disabled', true);
+                modal.querySelector('.modal-add-img').style.display = null;
+                modal.querySelector('.modal-add-img-2').style.display = "none";
+            }
         });
     };
 }
