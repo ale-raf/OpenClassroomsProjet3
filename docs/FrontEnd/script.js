@@ -68,6 +68,7 @@ function showCategories(categories) {
 works = getWorks();
 getCategories();
 
+
 // GET TOKEN TO DISPLAY ADMINISTRATOR ACTIONS
 const token = sessionStorage.getItem('token');
 const modalBtn = document.querySelector('.modal-js');
@@ -82,4 +83,5 @@ function edit() {
         login.innerHTML = "login";
     }
 }
+
 edit();
